@@ -1,0 +1,17 @@
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\sms\SmsChannel.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\core\ChannelType.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\email\SendGridProvider.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\core\NotificationChannel.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\push\PushChannel.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\push\FirebaseProvider.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\examples\NotificationExamples.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\sms\TwilioProvider.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\providers\config\NotificationConfig.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\core\NotificationResult.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\email\EmailProvider.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\core\NotificationException.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\sms\SmsProvider.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\email\EmailChannel.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\core\Notification.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\channels\push\PushProvider.java
+C:\Users\nicol\Desktop\Challenge Backend\Notifications Library\src\main\java\com\notifications\NotificationService.java
