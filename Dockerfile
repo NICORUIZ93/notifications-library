@@ -1,31 +1,24 @@
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY mvnw .
-COPY .mvn .mvn
+# Instalar Maven
+RUN apk add --no-cache maven
+
+# Copiar archivos del proyecto
 COPY pom.xml .
+COPY src ./src
 
-# Make mvnw executable
-RUN chmod +x mvnw
+# Compilar la librería
+RUN mvn clean package -DskipTests
 
-# Download dependencies (cached layer)
-RUN ./mvnw dependency:go-offline -B
-
-# Copy source code
-COPY src src
-
-# Build the library
-RUN ./mvnw clean package -DskipTests
-
-# Runtime stage
+# Imagen final
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copy the built jar
-COPY --from=builder /app/target/notifications-library-*.jar app.jar
+# Copiar el JAR compilado
+COPY --from=build /app/target/notifications-library-1.0.0-SNAPSHOT.jar ./notifications-library.jar
 
-# Run examples by default
-CMD ["java", "-cp", "app.jar", "com.notifications.Main"]
+# Ejecutar ejemplos
+CMD ["java", "-jar", "notifications-library.jar"]

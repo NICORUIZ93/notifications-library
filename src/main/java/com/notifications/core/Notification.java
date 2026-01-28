@@ -1,33 +1,62 @@
 package com.notifications.core;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Singular;
+
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Interfaz principal que representa una notificación a enviar.
- * Este es el contrato base que todos los tipos de notificación deben implementar.
- *
- * Decisión de Diseño: Usar una interfaz permite que diferentes tipos de notificación
- * tengan sus propios campos específicos mientras mantienen un contrato común.
+ * Modelo que representa una notificación genérica.
+ * Utiliza el patrón Builder para facilitar la construcción de instancias inmutables.
  */
-public interface Notification {
+@Getter
+@Builder
+public class Notification {
 
     /**
-     * @return El destinatario de la notificación (email, número de teléfono, token de dispositivo, etc.)
+     * Identificador único de la notificación.
      */
-    String getRecipient();
+    private final String id;
 
     /**
-     * @return El contenido/cuerpo principal de la notificación
+     * Conjunto de destinatarios.
      */
-    String getMessage();
+    @Singular
+    private final Set<String> recipients;
 
     /**
-     * @return El canal a través del cual se debe enviar esta notificación
+     * Contenido del mensaje.
      */
-    NotificationChannel getChannel();
+    private final String content;
 
     /**
-     * @return Metadatos adicionales para la notificación (opcional)
+     * Asunto de la notificación (aplicable a canales como email).
      */
-    Map<String, Object> getMetadata();
+    private final String subject;
+
+    /**
+     * Metadatos adicionales específicos del canal.
+     */
+    @Singular("metadata")
+    private final Map<String, Object> metadata;
+
+    /**
+     * Prioridad de la notificación.
+     */
+    @Builder.Default
+    private final Priority priority = Priority.NORMAL;
+
+    /**
+     * Canal preferido para el envío.
+     */
+    private final ChannelType preferredChannel;
+
+    /**
+     * Niveles de prioridad disponibles.
+     */
+    public enum Priority {
+        LOW, NORMAL, HIGH, URGENT
+    }
 }

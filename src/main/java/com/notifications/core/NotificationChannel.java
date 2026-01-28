@@ -1,11 +1,32 @@
 package com.notifications.core;
 
 /**
- * Enum que representa los canales de notificación disponibles.
- * Cada canal representa una forma diferente de entregar notificaciones.
+ * Interfaz base para todos los canales de notificación.
+ * Define el contrato que deben implementar los canales específicos.
  */
-public enum NotificationChannel {
-    EMAIL,
-    SMS,
-    PUSH
+public interface NotificationChannel {
+
+    /**
+     * Envía una notificación a través de este canal.
+     *
+     * @param notification Notificación a enviar
+     * @return Resultado del envío
+     * @throws NotificationException Si ocurre un error durante el envío
+     */
+    NotificationResult send(Notification notification) throws NotificationException;
+
+    /**
+     * Verifica si este canal puede procesar la notificación especificada.
+     *
+     * @param notification Notificación a evaluar
+     * @return true si el canal puede procesar la notificación
+     */
+    boolean supports(Notification notification);
+
+    /**
+     * Obtiene el tipo de canal.
+     *
+     * @return Tipo de canal
+     */
+    ChannelType getType();
 }

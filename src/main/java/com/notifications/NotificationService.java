@@ -1,199 +1,149 @@
 package com.notifications;
 
-import com.notifications.config.NotificationConfig;
 import com.notifications.core.*;
-import com.notifications.exception.ConfigurationException;
-import com.notifications.exception.NotificationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
- * Punto de entrada principal para la librería de notificaciones.
- * Proporciona una API unificada para enviar notificaciones a través de todos los canales.
- *
- * Patrón de Diseño: Facade Pattern - Proporciona una interfaz simple al
- * subsistema complejo de proveedores y canales.
- *
- * Ejemplo de uso:
- * <pre>
- * NotificationService service = NotificationService.builder()
- *     .config(config)
- *     .register(new SendGridProvider(config))
- *     .register(new TwilioProvider(config))
- *     .register(new FirebaseProvider(config))
- *     .build();
- *
- * NotificationResult result = service.send(EmailNotification.builder()
- *     .recipient("usuario@ejemplo.com")
- *     .subject("Hola")
- *     .message("Mundo")
- *     .build());
- * </pre>
+ * Servicio principal para el envío de notificaciones.
+ * Implementa los patrones Facade y Builder para simplificar la interacción con múltiples canales.
  */
+@Slf4j
+@RequiredArgsConstructor
 public class NotificationService {
 
-    private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
-
-    private final NotificationConfig config;
-    private final ProviderRegistry registry;
-    private final ExecutorService executorService;
-
-    private NotificationService(Builder builder) {
-        this.config = builder.config;
-        this.registry = builder.registry;
-        this.executorService = builder.executorService != null
-                ? builder.executorService
-                : Executors.newFixedThreadPool(config != null ? config.getThreadPoolSize() : 10);
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
+    private final Map<ChannelType, NotificationChannel> channels;
 
     /**
-     * Envía una notificación de forma síncrona usando el proveedor por defecto del canal.
+     * Envía una notificación utilizando el canal apropiado.
      *
-     * @param notification La notificación a enviar
-     * @return El resultado de la operación de envío
+     * @param notification Notificación a enviar
+     * @return Resultado del envío
+     * @throws NotificationException Si ocurre un error durante el proceso
      */
-    public NotificationResult send(Notification notification) {
-        NotificationProvider provider = getProviderForNotification(notification);
-        return sendWithProvider(notification, provider);
+    public NotificationResult send(Notification notification) throws NotificationException {
+        log.info("Procesando notificación: {}", notification.getId());
+
+        if (channels.isEmpty()) {
+            throw new NotificationException(
+                    "No hay canales de notificación configurados",
+                    NotificationException.ErrorType.CONFIGURATION_ERROR,
+                    null
+            );
+        }
+
+        NotificationChannel channel = selectChannel(notification);
+        return channel.send(notification);
     }
 
     /**
-     * Envía una notificación de forma síncrona usando un proveedor específico.
+     * Envía una notificación de manera asíncrona.
      *
-     * @param notification La notificación a enviar
-     * @param providerName El nombre del proveedor a usar
-     * @return El resultado de la operación de envío
-     */
-    public NotificationResult send(Notification notification, String providerName) {
-        NotificationProvider provider = registry.getProvider(notification.getChannel(), providerName)
-                .orElseThrow(() -> new ConfigurationException(
-                        "Proveedor '" + providerName + "' no encontrado para canal " + notification.getChannel()));
-        return sendWithProvider(notification, provider);
-    }
-
-    /**
-     * Envía una notificación de forma asíncrona usando el proveedor por defecto.
-     *
-     * @param notification La notificación a enviar
-     * @return Un CompletableFuture con el resultado
+     * @param notification Notificación a enviar
+     * @return CompletableFuture con el resultado del envío
      */
     public CompletableFuture<NotificationResult> sendAsync(Notification notification) {
-        return CompletableFuture.supplyAsync(() -> send(notification), executorService);
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return send(notification);
+            } catch (NotificationException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
-     * Envía una notificación de forma asíncrona usando un proveedor específico.
+     * Envía múltiples notificaciones en lote.
      *
-     * @param notification La notificación a enviar
-     * @param providerName El proveedor a usar
-     * @return Un CompletableFuture con el resultado
+     * @param notifications Lista de notificaciones a enviar
+     * @return Lista de resultados correspondientes a cada notificación
      */
-    public CompletableFuture<NotificationResult> sendAsync(Notification notification, String providerName) {
-        return CompletableFuture.supplyAsync(() -> send(notification, providerName), executorService);
+    public List<NotificationResult> sendBatch(List<Notification> notifications) {
+        List<NotificationResult> results = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+            try {
+                NotificationResult result = send(notification);
+                results.add(result);
+            } catch (NotificationException e) {
+                log.error("Error al enviar notificación en lote: {}", notification.getId(), e);
+                results.add(NotificationResult.failure(
+                        notification.getId(),
+                        e.getChannelType(),
+                        e.getMessage()
+                ));
+            }
+        }
+
+        return results;
     }
 
     /**
-     * Envía múltiples notificaciones de forma asíncrona.
-     *
-     * @param notifications Las notificaciones a enviar
-     * @return Un CompletableFuture con todos los resultados
+     * Selecciona el canal apropiado para la notificación.
+     * Prioriza el canal preferido si está disponible, de lo contrario selecciona automáticamente.
      */
-    public CompletableFuture<List<NotificationResult>> sendBatch(List<Notification> notifications) {
-        List<CompletableFuture<NotificationResult>> futures = notifications.stream()
-                .map(this::sendAsync)
-                .toList();
-
-        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .thenApply(v -> futures.stream()
-                        .map(CompletableFuture::join)
-                        .toList());
-    }
-
-    private NotificationProvider getProviderForNotification(Notification notification) {
-        return registry.getDefaultProvider(notification.getChannel())
-                .orElseThrow(() -> new ConfigurationException(
-                        "No hay proveedor configurado para el canal: " + notification.getChannel()));
-    }
-
-    private NotificationResult sendWithProvider(Notification notification, NotificationProvider provider) {
-        log.debug("Enviando notificación via proveedor {}", provider.getName());
-
-        try {
-            // Validar primero
-            provider.validate(notification);
-
-            // Enviar
-            NotificationResult result = provider.send(notification);
-
-            if (result.isSuccess()) {
-                log.info("Notificación enviada exitosamente via {} [messageId={}]",
-                        provider.getName(), result.getMessageId().orElse("N/A"));
-            } else {
-                log.warn("Notificación falló via {} [error={}]",
-                        provider.getName(), result.getErrorMessage().orElse("Error desconocido"));
+    private NotificationChannel selectChannel(Notification notification) throws NotificationException {
+        if (notification.getPreferredChannel() != null) {
+            NotificationChannel preferredChannel = channels.get(notification.getPreferredChannel());
+            if (preferredChannel != null && preferredChannel.supports(notification)) {
+                return preferredChannel;
             }
 
-            return result;
-
-        } catch (NotificationException e) {
-            log.error("Error de notificación via {}: {}", provider.getName(), e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            log.error("Error inesperado enviando notificación via {}", provider.getName(), e);
-            return NotificationResult.failure(notification.getChannel(), provider.getName(), e);
+            log.warn("Canal preferido {} no disponible, seleccionando automáticamente",
+                    notification.getPreferredChannel());
         }
+
+        Optional<NotificationChannel> compatibleChannel = channels.values().stream()
+                .filter(channel -> channel.supports(notification))
+                .findFirst();
+
+        if (compatibleChannel.isPresent()) {
+            return compatibleChannel.get();
+        }
+
+        throw new NotificationException(
+                "No se encontró un canal compatible para los destinatarios especificados",
+                NotificationException.ErrorType.VALIDATION_ERROR,
+                null
+        );
     }
 
     /**
-     * Obtiene el registro de proveedores para configuración avanzada.
+     * Builder para la construcción fluida del servicio.
      */
-    public ProviderRegistry getRegistry() {
-        return registry;
-    }
-
-    /**
-     * Cierra el servicio de ejecución.
-     */
-    public void shutdown() {
-        executorService.shutdown();
-    }
-
     public static class Builder {
-        private NotificationConfig config;
-        private final ProviderRegistry registry = new ProviderRegistry();
-        private ExecutorService executorService;
+        private final Map<ChannelType, NotificationChannel> channels = new HashMap<>();
 
-        public Builder config(NotificationConfig config) {
-            this.config = config;
+        public Builder withEmailChannel(com.notifications.channels.email.EmailProvider emailProvider) {
+            channels.put(ChannelType.EMAIL,
+                    new com.notifications.channels.email.EmailChannel(emailProvider));
             return this;
         }
 
-        public Builder register(NotificationProvider provider) {
-            registry.register(provider);
+        public Builder withSmsChannel(com.notifications.channels.sms.SmsProvider smsProvider) {
+            channels.put(ChannelType.SMS,
+                    new com.notifications.channels.sms.SmsChannel(smsProvider));
             return this;
         }
 
-        public Builder defaultProvider(NotificationChannel channel, String providerName) {
-            registry.setDefault(channel, providerName);
+        public Builder withPushChannel(com.notifications.channels.push.PushProvider pushProvider) {
+            channels.put(ChannelType.PUSH,
+                    new com.notifications.channels.push.PushChannel(pushProvider));
             return this;
         }
 
-        public Builder executorService(ExecutorService executorService) {
-            this.executorService = executorService;
+        public Builder withCustomChannel(ChannelType type, NotificationChannel channel) {
+            channels.put(type, channel);
             return this;
         }
 
         public NotificationService build() {
-            return new NotificationService(this);
+            if (channels.isEmpty()) {
+                throw new IllegalStateException("Debe configurarse al menos un canal");
+            }
+            return new NotificationService(channels);
         }
     }
 }
