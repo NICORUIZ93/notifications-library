@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fd9894b2-af25-409e-9c8f-c1aa9f8715b2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/notifications/channels/NotificationChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/notifications/NotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/config/NotificationConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/config/ProviderConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/core/Notification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/core/NotificationChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/notifications/core/NotificationChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/core/NotificationProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/core/NotificationResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/core/NotificationSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/core/ProviderRegistry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/exception/ConfigurationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/exception/NotificationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/exception/ProviderException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/exception/ValidationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/model/BaseNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/model/EmailNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/model/PushNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/model/SmsNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/AbstractProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/email/MailgunProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/email/SendGridProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/push/ApnsProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/push/FirebaseProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/sms/TwilioProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/notifications/provider/sms/VonageProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/notifications/MainTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/notifications/NotificationServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/notifications/provider/email/SendGridProviderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/notifications/provider/push/FirebaseProviderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/notifications/provider/sms/TwilioProviderTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="38qk9lhcgOqp0IWpS6PAlDCM7aX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.Main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nicol/Desktop/Challenge Backend/Notifications Library",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/nicol/Desktop/Challenge Backend/Notifications Library/src/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "terminal",
+    "show.migrate.to.gradle.popup": "false",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nicol\Desktop\Challenge Backend\Notifications Library" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="UNNAMED_CLASS_CONFIGURATION" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="Notifications Library" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd9894b2-af25-409e-9c8f-c1aa9f8715b2" name="Changes" comment="" />
+      <created>1769534339756</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769534339756</updated>
+      <workItem from="1769534343865" duration="3040000" />
+      <workItem from="1769548912218" duration="67000" />
+      <workItem from="1769603920812" duration="5873000" />
+      <workItem from="1769611752721" duration="457000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

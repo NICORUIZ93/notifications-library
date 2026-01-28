@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/maven/bin/mvn\" compile -q)",
+      "Bash(\"C:/maven/bin/mvn\" install -q)",
+      "Bash(\"C:/maven/bin/mvn\" compile exec:java -q)"
+    ]
+  }
+}
